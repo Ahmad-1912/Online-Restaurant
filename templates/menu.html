@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #3b533c;
+            font-family: 'Roboto', sans-serif;
+        }
+        .back-button, .logout-button {
+            position: fixed;
+            top: 20px;
+            background-color: #254126;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-to-orders-button {
+            right: 140px; 
+        }
+        .logout-button {
+            right: 20px;
+        }
+        
+        /* style for shoppingcart */
+        .menu {
+            width: 750px;
+            height: auto;
+            margin: 80px auto;
+            background: #FFFFFF;
+            box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* shoppingcart title */
+        .menu .title {
+            height: 60px;
+            border-bottom: 1px solid #E1E8EE;
+            padding: 20px 30px;
+            color: #5E6977;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* style for product */
+        .menu .item {
+            padding: 20px 30px;
+            height: auto;
+            display: flex;
+            border-bottom: 1px solid #E1E8EE;
+        }
+
+        /* style for image */
+        .menu .image {
+            margin-right: 50px;
+        }
+
+        .menu .image img {
+            max-width: 100px; 
+            height: auto;
+        }
+
+        .menu .description {
+            padding-top: 10px;
+            margin-right: 60px;
+            width: auto;
+        }
+
+        .menu .description span {
+            display: block;
+            font-size: 14px;
+            color: #43484D;
+            font-weight: 400;
+        }
+
+        .menu .description span:first-child {
+            margin-bottom: 5px;
+        }
+
+        .menu .description span:last-child {
+            font-weight: 300;
+            margin-top: 8px;
+            color: #86939E;
+        }
+
+        .menu .total-price {
+            width: 83px;
+            padding-top: 27px;
+            text-align: center;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+        }
+
+        .menu .quantity {
+            display: flex;
+            align-items: center;
+            margin-right: 60px;
+        }
+
+        .menu .quantity button {
+            background-color: #254126;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .menu .quantity input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .menu .quantity button:hover {
+            background-color: #1e3a21;
+        }
+
+        /* small images */
+        @media (max-width: 800px) {
+            .menu {
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+            }
+
+            .menu .item {
+                height: auto;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .menu .image img {
+                width: 50%;
+            }
+
+            .menu .image,
+            .menu .quantity,
+            .menu .description {
+                width: 100%;
+                text-align: center;
+                margin: 6px 0;
+            }
+
+            .menu .buttons {
+                margin-right: 20px;
+            }
+            
+            .order-details {
+                margin-top: 20px;
+                padding-top: 20px;
+            }
+            
+            .order-details hr {
+                margin-bottom: 20px;
+            }
+            
+            .order-details h2 {
+                font-size: 20px;
+                color: #5E6977;
+            }
+            
+            .order-details h3 {
+                font-size: 24px;
+                color: #1d647e;
+            }
+        }
+
+        /* payment options */
+        .payment-options {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E1E8EE;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .payment-option input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Orders Button -->
+    <button class="back-button" onclick="history.back()">Back</button>
+
+    <!-- Logout-Button -->
+    <a href="/" class="logout-button">Logout</a>
+
+    <div class="menu">
+        <div class="title">
+            Menu
+        </div>
+
+        <!-- Products -->
+        {% for item in items %}
+        {% if item.availability %}
+        <div class="item" data-item-id="{{ item.itemID }}">
+            <div class="image">
+                {% if item.itemName == "Chicken Parmesan" %}
+                <img src="{{ url_for('static', filename='images/chicken_parmesan.jpg') }}" alt="Chicken Parmesan" />
+                {% elif item.itemName == "Margherita Pizza" %}
+                <img src="{{ url_for('static', filename='images/margherita_pizza.jpg') }}" alt="Margherita Pizza" />
+                {% elif item.itemName == "Caesar Salad" %}
+                <img src="{{ url_for('static', filename='images/caesar_salad.jpg') }}" alt="Caesar Salad" />
+                {% elif item.itemName == "Spaghetti Bolognese" %}
+                <img src="{{ url_for('static', filename='images/spaghetti_bolognese.jpg') }}" alt="Spaghetti Bolognese" />
+                {% elif item.itemName == "Vegetable Stir Fry" %}
+                <img src="{{ url_for('static', filename='images/vegetable_stir_fry.jpg') }}" alt="Vegetable Stir Fry" />
+                {% elif item.itemName == "Tiramisu" %}
+                <img src="{{ url_for('static', filename='images/tiramisu.jpg') }}" alt="Tiramisu" />
+                {% elif item.itemName == "Garlic Bread" %}
+                <img src="{{ url_for('static', filename='images/garlic_bread.jpg') }}" alt="Garlic Bread" />
+                {% elif item.itemName == "Fettuccine Alfredo" %}
+                <img src="{{ url_for('static', filename='images/fettuccine_alfredo.jpg') }}" alt="Fettuccine Alfredo" />
+                {% elif item.itemName == "Bruschetta" %}
+                <img src="{{ url_for('static', filename='images/bruschetta.jpg') }}" alt="Bruschetta" />
+                {% elif item.itemName == "Lasagna" %}
+                <img src="{{ url_for('static', filename='images/lasagna.jpg') }}" alt="Lasagna" />
+                {% elif item.itemName == "Caprese Salad" %}
+                <img src="{{ url_for('static', filename='images/caprese_salad.jpg') }}" alt="Caprese Salad" />
+                {% elif item.itemName == "Chicken Wings" %}
+                <img src="{{ url_for('static', filename='images/chicken_wings.jpg') }}" alt="Chicken Wings" />
+                {% elif item.itemName == "Fish and Chips" %}
+                <img src="{{ url_for('static', filename='images/fish_and_chips.jpg') }}" alt="Fish and Chips" />
+                {% elif item.itemName == "Cheeseburger" %}
+                <img src="{{ url_for('static', filename='images/cheeseburger.jpg') }}" alt="Cheeseburger" />
+                {% else %}
+                <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.itemName }}" />
+                {% endif %}
+            </div>
+
+            <div class="description">
+                <span>{{ item.itemName }}</span>
+                <span>{{ item.description }}</span>
+                <span>{{ item.category }}</span>
+            </div>
+
+            <div class="quantity">
+                <button class="minus-btn" type="button">-</button>
+                <input type="text" name="quantity" value="0" readonly> 
+                <button class="plus-btn" type="button">+</button>
+            </div>
+
+            <div class="total-price">${{ item.price }}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Payment Options -->
+        <div class="payment-options">
+            <h2 style="font-size: 20px; margin-bottom: 10px;">Payment Options</h2>
+            <div class="payment-buttons">
+                <div class="payment-option">
+                    <input type="radio" id="paypal" name="paymentMethod" value="paypal">
+                    <label for="paypal">PayPal</label>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="cash" name="paymentMethod" value="cash">
+                    <label for="cash">Cash</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order and Total -->
+        <div class="order-details">
+            <hr>
+            <h2>Order</h2>
+            <div id="ordered-items"></div>
+            <h3 id="total">Total: $0.00</h3>
+            <button id="place-order-btn" disabled>Place order</button>
+        </div>
+
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            let orderedItems = [];
+            
+            // Update orderedItems and total when quantity changes
+            $('.menu').on('click', '.plus-btn', function() {
+                updateQuantity($(this), 'plus');
+            });
+            
+            $('.menu').on('click', '.minus-btn', function() {
+                updateQuantity($(this), 'minus');
+            });
+
+            // Update orderedItems and total when place order button is clicked
+            $('#place-order-btn').on('click', function() {
+                placeOrder();
+            });
+
+            // Check if a payment method is selected
+            $('.payment-option input').on('change', function() {
+                updatePlaceOrderButton();
+            });
+
+            // Update quantity based on button clicked
+            function updateQuantity(button, action) {
+                var input = button.siblings('input[name="quantity"]');
+                var value = parseInt(input.val());
+                if (action === 'plus') {
+                    input.val(value + 1);
+                } else if (action === 'minus' && value > 0) {
+                    input.val(value - 1);
+                }
+                updateOrderedItems();
+            }
+    
+            // Update orderedItems based on quantity inputs
+            function updateOrderedItems() {
+                orderedItems = [];
+                var totalQuantity = 0;
+                $('.item').each(function() {
+                    var itemID = $(this).data('item-id');  // Get the itemID from the data attribute
+                    var itemName = $(this).find('.description span:first-child').text();
+                    var quantity = parseInt($(this).find('input[name="quantity"]').val());
+                    totalQuantity += quantity;
+                    if (quantity > 0) {
+                        orderedItems.push({ itemName: itemName, itemID: itemID, quantity: quantity });
+                    }
+                });
+                updateTotal();
+                // Enable or disable place order button based on total quantity and payment method
+                updatePlaceOrderButton();
+            }
+    
+            // Update total based on orderedItems
+            function updateTotal() {
+                var total = 0;
+                orderedItems.forEach(function(item) {
+                    total += item.quantity * parseFloat($('.item:contains(' + item.itemName + ') .total-price').text().replace('$', ''));
+                });
+                $('#total').text('Total: $' + total.toFixed(2));
+            }
+    
+            function resetQuantityCounters() {
+                var quantityInputs = document.querySelectorAll('.quantity-input');
+                for (var i = 0; i < quantityInputs.length; i++) {
+                    quantityInputs[i].value = 0;
+                }
+            }
+
+    
+            function resetQuantityInputs() {
+                $('input[name="quantity"]').val(0);
+            } 
+
+            // Update the state of the place order button based on quantity and payment method
+            function updatePlaceOrderButton() {
+                var totalQuantity = orderedItems.reduce((sum, item) => sum + item.quantity, 0);
+                var paymentMethodSelected = $('input[name="paymentMethod"]:checked').length > 0;
+                $('#place-order-btn').prop('disabled', totalQuantity === 0 || !paymentMethodSelected);
+            }
+            
+            // Capture payment method
+            function capturePaymentMethod() {
+                selectedPaymentMethod = $('input[name="paymentMethod"]:checked').val();
+            }
+            
+            // Capture payment method when a payment option is selected
+            $('.payment-option input').on('change', function() {
+                capturePaymentMethod();
+                updatePlaceOrderButton();
+            });
+
+            // Send order to server
+            function placeOrder() {
+                $.ajax({
+                    url: '/orders',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ orderItems: orderedItems, paymentMethod: selectedPaymentMethod}),
+                    success: function(response) {
+                        alert('Thank you for your order. Your food will be delivered soon.');
+                        resetQuantityInputs(); // Reset quantities after successful order
+                        
+                        // Disable place order button after successful order
+                        $('#place-order-btn').prop('disabled', true);
+                    },
+                    error: function(err) {
+                        console.error('Error placing order:', err);
+                    }
+                });
+            }
+
+            
+        });
+    </script>
+</body>
+</html>

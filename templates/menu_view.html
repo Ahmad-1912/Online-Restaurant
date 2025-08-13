@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #3b533c;
+            font-family: 'Roboto', sans-serif;
+        }
+        .back-button, .logout-button {
+            position: fixed;
+            top: 20px;
+            background-color: #254126;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .logout-button {
+            right: 20px;
+        }
+        
+        .menu {
+            width: 750px;
+            height: auto;
+            margin: 80px auto;
+            background: #FFFFFF;
+            box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .menu .title {
+            height: 60px;
+            border-bottom: 1px solid #E1E8EE;
+            padding: 20px 30px;
+            color: #5E6977;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .menu .item {
+            padding: 20px 30px;
+            height: auto;
+            display: flex;
+            border-bottom: 1px solid #E1E8EE;
+        }
+
+        .menu .image {
+            margin-right: 50px;
+        }
+
+        .menu .image img {
+            max-width: 100px; 
+            height: auto;
+        }
+
+        .menu .description {
+            padding-top: 10px;
+            margin-right: 60px;
+            width: auto;
+        }
+
+        .menu .description span {
+            display: block;
+            font-size: 14px;
+            color: #43484D;
+            font-weight: 400;
+        }
+
+        .menu .description span:first-child {
+            margin-bottom: 5px;
+        }
+
+        .menu .description span:last-child {
+            font-weight: 300;
+            margin-top: 8px;
+            color: #86939E;
+        }
+
+        .menu .total-price {
+            width: 83px;
+            padding-top: 27px;
+            text-align: center;
+            font-size: 16px;
+            color: #43484D;
+            font-weight: 300;
+        }
+
+        @media (max-width: 800px) {
+            .menu {
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+            }
+
+            .menu .item {
+                height: auto;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .menu .image img {
+                width: 50%;
+            }
+
+            .menu .image,
+            .menu .description {
+                width: 100%;
+                text-align: center;
+                margin: 6px 0;
+            }
+
+            .menu .buttons {
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Previous Page Button -->
+    <button class="back-button" onclick="window.location.href='/'">Back</button>
+
+    <!-- Login Button -->
+    <a href="/" class="logout-button">Login</a>
+
+    <div class="menu">
+        <div class="title">
+            Menu
+        </div>
+        {% for item in items %}
+        {% if item.availability %}
+        <div class="item" data-item-id="{{ item.itemID }}">
+            <div class="image">
+                {% if item.itemName == "Chicken Parmesan" %}
+                <img src="{{ url_for('static', filename='images/chicken_parmesan.jpg') }}" alt="Chicken Parmesan" />
+                {% elif item.itemName == "Margherita Pizza" %}
+                <img src="{{ url_for('static', filename='images/margherita_pizza.jpg') }}" alt="Margherita Pizza" />
+                {% elif item.itemName == "Caesar Salad" %}
+                <img src="{{ url_for('static', filename='images/caesar_salad.jpg') }}" alt="Caesar Salad" />
+                {% elif item.itemName == "Spaghetti Bolognese" %}
+                <img src="{{ url_for('static', filename='images/spaghetti_bolognese.jpg') }}" alt="Spaghetti Bolognese" />
+                {% elif item.itemName == "Vegetable Stir Fry" %}
+                <img src="{{ url_for('static', filename='images/vegetable_stir_fry.jpg') }}" alt="Vegetable Stir Fry" />
+                {% elif item.itemName == "Tiramisu" %}
+                <img src="{{ url_for('static', filename='images/tiramisu.jpg') }}" alt="Tiramisu" />
+                {% elif item.itemName == "Garlic Bread" %}
+                <img src="{{ url_for('static', filename='images/garlic_bread.jpg') }}" alt="Garlic Bread" />
+                {% elif item.itemName == "Fettuccine Alfredo" %}
+                <img src="{{ url_for('static', filename='images/fettuccine_alfredo.jpg') }}" alt="Fettuccine Alfredo" />
+                {% elif item.itemName == "Bruschetta" %}
+                <img src="{{ url_for('static', filename='images/bruschetta.jpg') }}" alt="Bruschetta" />
+                {% elif item.itemName == "Lasagna" %}
+                <img src="{{ url_for('static', filename='images/lasagna.jpg') }}" alt="Lasagna" />
+                {% elif item.itemName == "Caprese Salad" %}
+                <img src="{{ url_for('static', filename='images/caprese_salad.jpg') }}" alt="Caprese Salad" />
+                {% elif item.itemName == "Chicken Wings" %}
+                <img src="{{ url_for('static', filename='images/chicken_wings.jpg') }}" alt="Chicken Wings" />
+                {% elif item.itemName == "Fish and Chips" %}
+                <img src="{{ url_for('static', filename='images/fish_and_chips.jpg') }}" alt="Fish and Chips" />
+                {% elif item.itemName == "Cheeseburger" %}
+                <img src="{{ url_for('static', filename='images/cheeseburger.jpg') }}" alt="Cheeseburger" />
+                {% else %}
+                <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.itemName }}" />
+                {% endif %}
+            </div>
+            <div class="description">
+                <span>{{ item.itemName }}</span>
+                <span>{{ item.description }}</span>
+                <span>{{ item.category }}</span>
+            </div>
+            <div class="total-price">${{ item.price }}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+</html>
+

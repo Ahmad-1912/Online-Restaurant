@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background-color: #3b533c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .user-info {
+            padding: 10px 20px;
+            text-align: left;
+            margin-left: 20px;
+            font-size: 16px;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .order-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        .order-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .order-item h3 {
+            margin-bottom: 5px;
+        }
+        .order-item p {
+            margin: 0;
+            color: #666;
+        }
+        .back-button {
+            margin-top: 20px; 
+        }
+        .logout-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+        .order-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #254126;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ customer.firstName }}.</h1>
+    </header>
+   
+    <div class="user-info">
+        <h2> Have a look at your previous orders! </h2>
+    </div>
+    <main>
+        <div class="order-container">
+            <h2>Previous Orders</h2>
+            {% for order in orders %}
+            <div class="order-item">
+                <h3>Date: {{ order.orderDate.strftime('%Y-%m-%d %H:%M') }}</h3>
+                <p>Status: {{ order.orderStatus }}</p>
+                <h4>Order Contents:</h4>
+                <ul>
+                {% for item in order.orderItems %}
+                    <li>{{ menu[item.itemID]}} : x{{ item.quantity }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Button to menu -->
+        <a href="/menu">
+            <button class="order-button">Make an order</button>
+        </a>
+    </main>
+    
+    <!-- Logout-Button -->
+    <div class="logout-button">
+        <a href="/">
+            <button class="order-button">Logout</button>
+        </a>
+    </div>
+</body>
+</html>

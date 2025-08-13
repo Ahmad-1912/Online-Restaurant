@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Online Restaurant</title>
+  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+        }
+        header {
+            background-color: #3b533c;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            margin: 0;
+        }
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #254126;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .menu-button:hover {
+            background-color: #1e3a21;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .container {
+            background-color: rgb(248, 248, 248);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(144, 67, 138, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        input {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #254126;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #3b533c;
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            bottom: 0;
+            left: 0;
+        }
+        .footer-text {
+            margin: 5px 0;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Online Restaurant</h1>
+        <a href="{{ url_for('menu.get_menu_view_page') }}" class="menu-button">View Menu</a>
+    </header>
+    <main>
+        <p>Explore our menu and place your order online.</p>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Login Form -->
+        <div class="container">
+            <h2>Login</h2>
+            <form action="/login" method="POST">
+                <!-- Role Selection -->
+                <div>
+                    <input type="radio" id="role_user" name="role" value="customer" checked>
+                    <label for="role_user">Customer</label>
+                    <input type="radio" id="role_admin" name="role" value="adminstrator">
+                    <label for="role_admin">Adminstrator</label>
+                </div>
+                <!-- Email or Username Field -->
+                <input type="text" name="identifier" placeholder="Customer Email or Adminstrator Username" required>
+                <!-- Password Field -->
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- JavaScript to update form action -->
+        <script>
+        function updateFormAction() {
+            var role = document.querySelector('input[name="role"]:checked').value;
+            var form = document.querySelector('form');
+            if (role === 'customer') {
+                form.action = "/login/customer";
+            } else if (role === 'adminstrator') {
+                form.action = "/login/admin";
+            }
+        }
+        document.querySelectorAll('input[name="role"]').forEach(input => {
+            input.addEventListener('change', updateFormAction);
+        });
+        // Initial call to set the correct action based on the default checked radio
+        updateFormAction();
+        </script>
+
+        <!-- Registration Form -->
+        <div class="container">
+            <h2>Create an Account</h2>
+            <form action="/register" method="POST">
+                <input type="text" name="firstName" placeholder="First Name" required>
+                <input type="text" name="lastName" placeholder="Last Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-text">Opening Hours: Mon-Sun, 10 AM - 10 PM</div>
+        <div class="footer-text">Contact: info@onlinerestaurant.com | +123 456 7890</div>
+    </footer>
+</body>
+</html>
